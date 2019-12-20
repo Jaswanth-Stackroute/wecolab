@@ -1,0 +1,273 @@
+<link href="../../../../../assets/dash_assets/css/bootstrap.min.css" rel="stylesheet" />
+<link href="../../../../../assets/dash_assets/css/paper-dashboard.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+
+<div class="content">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5 col-md-4">
+                            <div class="icon-big text-center icon-warning">
+                                <i class="fas fa-tv"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-md-8">
+                            <div class="numbers">
+                                <p class="card-category"> Total Conference Rooms</p>
+                                <p class="card-title">{{allVideoRooms}}
+                                    <p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="card-footer ">
+                    <hr>
+                    <div class="stats">
+                        <i class="fa fa-calendar-o"></i> Last day
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5 col-md-4">
+                            <div class="icon-big text-center icon-warning">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-md-8">
+                            <div class="numbers">
+                                <p class="card-category">Total Presentation Rooms</p>
+                                <p class="card-title">{{allPresentationRooms}}
+                                    <p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="card-footer ">
+                    <hr>
+                    <div class="stats">
+                        <i class="fa fa-clock-o"></i> In the last hour
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-5 col-md-4">
+                            <div class="icon-big text-center icon-warning">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="col-7 col-md-8">
+                            <div class="numbers">
+                                <p class="card-category">Total Company Members</p>
+                                <p class="card-title">{{numOfMember}}
+                                    <p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="card-footer ">
+                    <hr>
+                    <div class="stats">
+                        <i class="fa fa-refresh"></i> Update now
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <div class="card ">
+                <div class="card-header ">
+                    <h5 class="card-title">Users Behavior</h5>
+                    <p class="card-category">24 Hours performance</p>
+                </div>
+                <div class="card-body ">
+                    <canvas id=chartHours width="400" height="100"></canvas>
+                </div>
+                <div class="card-footer ">
+                    <hr>
+                    <div class="stats">
+                        <i class="fa fa-history"></i> Updated 3 minutes ago
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Departments -->
+    <div class="row">
+        <!-- <div class="col-md-12">
+            <div class="card ">
+                <div class="card-header ">
+                    <h5 class="card-title">Departments</h5>
+                    <p class="card-category">Last Campaign Performance</p> -->
+        <!-- </div>
+                <div class="card-body ">
+                     <div class="table-responsive"> -->
+        <!-- <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th>Id</th> -->
+        <!-- <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>1</th>
+                                    <td>Demo</td>
+                                    <td>department for test</td>
+                                </tr> -->
+        <!-- </tbody>
+                        </table> -->
+        <!-- </div>    
+                </div>
+                <div class="card-footer ">
+                    <hr>
+                    <div class="stats">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#addDepartmentForm">Add
+                            Department</button>
+                    </div> -->
+        <!-- </div>
+            </div> -->
+        <!-- </div> -->
+
+
+        <!-- Employee -->
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Total Employees</h5>
+                    <!-- <p class="card-category">Line Chart with Points</p> -->
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark">
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>EmailId</th>
+                                    <th>Phone</th>
+                                    <th>Verified?</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let user of users">
+                                <tr>
+                                    <th id="{{user.id}}">{{user.id}}</th>
+                                    <td>{{user.name}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td>{{user.phone}}</td>
+                                    <td *ngIf='user.enabled'>
+                                        <i class="fas fa-check"></i>
+                                    </td>
+                                    <td *ngIf='!user.enabled'>
+                                        <i class="fas fa-times"></i>
+                                    </td>
+                                    <td *ngIf='user.role=="USER"'><button class="btn btn-danger"
+                                            (click)="removeEmployee(user.id)"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                    <td *ngIf='user.role=="OWNER"'>
+                                        <strong>OWNER</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <hr />
+                    <div class="card-stats">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#addEmployeeForm">Add
+                            Employee</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- addDepartmentForm -->
+<!-- <div class="modal fade" id="addDepartmentForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-md-offset-4">
+                        <form [formGroup]="createDepartmentForm" class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <input type="text" formControlName="departmentName" class="form-control"
+                                    placeholder="Enter Department Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" formControlName="description" class="form-control"
+                                    placeholder="Enter Description">
+                            </div>
+                            <div class="form-group">
+                                <ng-multiselect-dropdown [placeholder]="'select member'" [data]="dropdownList"
+                                    [formControl]="members" [settings]="dropdownSettings"
+                                    (onSelect)="onItemSelect($event)" (onDeSelect)="onDeSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </form>
+                    </div>
+</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDepartment(a)">Create</button>
+</div>
+</div>
+</div>
+</div> -->
+
+<!-- addEmployeeForm -->
+<div class="modal fade" id="addEmployeeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-md-offset-4">
+                        <form [formGroup]="addEmployeeForm" class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> Enter Employee Email</label>
+                                <input type="email" formControlName="emailId" class="form-control"
+                                    placeholder="Enter email">
+                            </div>
+                        </form>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addMember()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

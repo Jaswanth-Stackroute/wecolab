@@ -1,0 +1,58 @@
+version: '3'
+services:
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+      - '8071:8080'
+    hostname: localhost
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#      - ./prometheus_db:/var/lib/prometheus
+      - ./alert.rules:/etc/prometheus/alert.rules
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    hostname: localhost
+    network_mode: host
+    ports:
+      - '9090:9090'
+
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - '9100:9100'
+    hostname: localhost
+    network_mode: host
+
+  grafana:
+    image: grafana/grafana
+    user: "1000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+#    volumes:
+#      - ./grafana_db:/var/lib/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - '3000:3000'
+    hostname: localhost
+    network_mode: host
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    volumes:
+      - ./alertmanager.yml:/alertmanager.yml
+    command:
+      - '--config.file=/alertmanager.yml'
+    ports:
+      - '9093:9093'
+    hostname: localhost
+    network_mode: host
+

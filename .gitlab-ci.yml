@@ -1,0 +1,19 @@
+image: maven:latest
+
+stages:
+  - build
+  - package
+
+build:
+  stage: build
+  tags: ["immersive-runner-cgi"]
+  script:
+    - echo "in build stage"
+    - mvn clean install
+
+package:
+  stage: package
+  tags: ["immersive-runner-cgi"]
+  script:
+    - echo "in package stage"
+    - mvn clean package -DskipTests

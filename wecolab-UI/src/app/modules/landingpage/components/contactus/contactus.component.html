@@ -1,0 +1,57 @@
+<div class="ContactUs-form">
+  <form [formGroup]="ContactUsForm" (ngSubmit)="onSendMessage()">
+    <h3 style="text-align: center;">Contact Us</h3>
+    <div class="form-group">
+      <input type="email" formControlName="emailId" class="form-control" name="emailId" placeholder="Email">
+      <div id="error" *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)">
+        <small *ngIf="emailId.errors['required']">email required</small>
+        <small *ngIf="emailId.errors['pattern']">invalid email</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="firstName" class="form-control" placeholder="FirstName">
+      <div id="error" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+        <small *ngIf="firstName.errors['required']">FirstName required</small>
+        <small></small>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="lastName" class="form-control" placeholder="LastName" required>
+      <div id="error" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+        <small *ngIf="lastName.errors['required']">LastName required</small>
+        <small></small>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="tel" formControlName="phone" name="phone" class="form-control" placeholder="Phone number">
+      <div id="error" *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+        <small *ngIf="phone.errors['required']">phone number required</small>
+        <small *ngIf="phone.errors['pattern']">invalid phone number</small>
+        <small></small>
+      </div>
+    </div>
+    <div class="form-group">
+      <select class="custom-select" formControlName="issue">
+        <option value="" disabled>Select Issue</option>
+        <option>Report A Bug</option>
+        <option>Feature Issue</option>
+        <option>Unable To Sign-In</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <input type="text" class="form-control" formControlName="message" placeholder="Message">
+      <div id="error" *ngIf="message.invalid && (message.dirty || message.touched)">
+        <small *ngIf="message.errors['required']">Message required</small>
+      </div>
+    </div>
+    <div class="form-group">
+
+      <button type="submit" (click)=showToaster() [disabled]="!ContactUsForm.valid"
+        class="btn btn-success btn-lg btn-block">Send Message</button>
+
+    </div>
+  </form>
+
+</div>

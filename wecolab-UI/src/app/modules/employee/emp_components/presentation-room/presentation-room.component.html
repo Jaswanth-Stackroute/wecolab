@@ -1,0 +1,153 @@
+<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
+<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet"> -->
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+<!-- CSS Files -->
+<!-- <link href="../assets/css/bootstrap.min.css" rel="stylesheet" /> -->
+<link href="../../../../../assets/dash_assets/css/paper-dashboard.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<!-- Button trigger modal -->
+<button id="createMeetingRoomBtn" type="button" class="btn btn-danger" (click)="getAllUsersOfCompany()"
+  data-toggle="modal" data-target="#exampleModal"><i class="material-icons">add_circle</i>
+  <!-- Create Conference Room -->
+</button>
+
+<!-- Modal -->
+<div class="modal fade" data-backdrop="static" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create New Room</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="room-name" class="col-form-label">Room Name:</label>
+            <input type="text" class="form-control" [(ngModel)]="roomName" (ngModelChange)="validateForm()" name="rn">
+          </div>
+          <div class="form-group">
+            <label for="room-desc" class="col-form-label">Meeting Agenda:</label>
+            <input type="text" class="form-control" [(ngModel)]="roomDesc" (ngModelChange)="validateForm()" name="rd">
+          </div>
+          <div>
+            <div class="form-group">
+              <label for="meeting-date-time" class="col-form-label">Meeting Date:</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" (ngModelChange)="validateForm()" ngbDatepicker
+                  #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <i class="fa fa-calendar" style="font-size:24px" (click)="d.toggle()"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="meeting-date-time" class="col-form-label">Meeting Time:</label>
+            <ngb-timepicker [(ngModel)]="time" (ngModelChange)="validateForm()" name="tp"></ngb-timepicker>
+          </div>
+          <div class="form-group">
+            <ng-multiselect-dropdown [placeholder]="'select member'" [data]="dropdownList" [settings]="dropdownSettings"
+              (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelect)="onDeSelect($event)"
+              (onDeSelectAll)="onDeSelectAll($event)">
+            </ng-multiselect-dropdown>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" (click)="createRoom()" data-dismiss="modal" [disabled] = "disableCreateButton">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="list-group" *ngFor="let room of userRoomData">
+  <button type="button" class="list-group-item list-group-item-action"  (click)="getRoomDetails(room.name)" data-toggle="modal" data-target="#exampleModalCenter">{{room.name.split("|")}}</button>
+</div> -->
+
+<!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{singleRoomData.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <b>Meeting Agenda:</b> {{singleRoomData.agenda}}<br>
+        <b>Meeting Date:</b> {{singleRoomData.sqlDate}}<br>
+        <b>Meeting Time:</b> {{singleRoomData.sqlTime}}<br>
+        <b>Participants:</b> 
+        <ul>
+            <li *ngFor="let item of singleRoomData.roomUser">
+               {{item.name}}
+            </li>
+         </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href={{singleRoomData.url}}><button type="button" class="btn btn-primary" [disabled] = "buttonDisable">Join</button></a>
+      </div>
+    </div>
+  </div>
+</div> -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 h-100"  *ngFor="let room of userRoomData ; let i = index">
+      <div class="card h-100" style="height: 300px !important" >
+        <div class="card-body" style="height: 300px !important">
+          <h5 class="card-title">{{room.name.split("|")}}</h5>
+          <p class="card-text"><b>Meeting Agenda: </b>{{room.agenda}}</p>
+          <p class="card-text"><b>Meeting Date: </b>{{room.sqlDate}}</p>
+          <p class="card-text"><b>Meeting Time: </b>{{room.sqlTime}}</p>
+          <p class="card-text"><b>Created By: </b>{{room.createdUserName}}</p>
+          <div class="d-flex flex-grow-1 flex-column"></div>
+
+          <!-- <a href="{{room.url}}" class="btn btn-success btn-sm" target="_blank"><i class="material-icons">duo</i></a> -->
+          <button (click)="onNavigate(room.url)" mat-button class="btn btn-success btn-sm" [disabled] = "buttonDisable[i]"><i class="material-icons">duo</i></button>
+
+          <button mat-button class="btn btn-danger btn-sm" [disabled] = "disableDeleteButton[i]" (click)="deleteRoomById(room.id)"><i class="material-icons">delete</i></button>
+          <button mat-button class="btn btn-light btn-sm" data-toggle="modal" data-target="#exampleModal1" (click)="getRoomDetails(room.name)"><i class="material-icons">info</i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" data-backdrop="static" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Participants</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li *ngFor="let item of singleRoomData.roomUserName">
+             {{item}}
+          </li>
+       </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--   Core JS Files   -->
+<!-- <script src="../../assets/js/core/jquery.min.js"></script>
+<script src="../../assets/js/core/popper.min.js"></script>
+<script src="../../assets/js/core/bootstrap.min.js"></script>
+<script src="../../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script> -->
+
+<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+<!-- <script src="../../assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script> -->

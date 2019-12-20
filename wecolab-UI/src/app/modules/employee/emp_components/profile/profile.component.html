@@ -1,0 +1,111 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+<!-- CSS Files -->
+<link href="../../../../../assets/dash_assets/css/paper-dashboard.css" rel="stylesheet" />
+<!-- CSS Just for demo purpose, don't include it in your project -->
+<link href="../../../../../assets/dash_assets/demo/demo.css" rel="stylesheet" />
+
+<!-- CSS Just for demo purpose, don't include it in your project -->
+<link href="../../../../../assets/dash_assets/demo/demo.css" rel="stylesheet" />
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="../assets/img/damir-bosnjak.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <div>
+              <label for="profilePicture">
+                <img *ngIf="imgSrc" class="avatar border-gray rounded-circle" src="{{imgSrc}}">
+                <img *ngIf="!imgSrc" class="avatar border-gray rounded-circle"
+                  src="../../../../../assets/img/dummy-profile-pic.jpg">
+              </label>
+              <input type="file" id="profilePicture" accept="image/*" (change)="onChange($event)">
+              <h5 *ngIf="employee" class="title">{{employee.firstName+" "+employee.lastName}}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <hr>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card card-user">
+        <div class="card-header">
+          <h5 class="card-title">Edit Profile</h5>
+        </div>
+        <div class="card-body">
+          <form *ngIf="employee" [formGroup]="editProfileForm">
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Company ID</label>
+                  <input type="text" class="form-control" formControlName="companyId" placeholder="Company">
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" class="form-control" formControlName="emailId" placeholder="EmailId">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" class="form-control" formControlName="firstName" placeholder="first Name">
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label>phone</label>
+                  <input type="tel" class="form-control" formControlName="phone" placeholder="phone">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="update ml-auto mr-auto">
+                <button type="button" (click)="updateProfile()" class="btn btn-primary btn-round">Update
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--   Core JS Files   -->
+<script src="../../../../../assets/dash_assets/js/core/jquery.min.js"></script>
+<script src="../../../../../assets/dash_assets/js/core/popper.min.js"></script>
+<script src="../../../../../assets/dash_assets/js/core/bootstrap.min.js"></script>
+<script src="../../../../../assets/dash_assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<!--  Google Maps Plugin    -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<!-- Chart JS -->
+<script src="../../../../../assets/dash_assets/js/plugins/chartjs.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="../../../../../assets/dash_assets/js/plugins/bootstrap-notify.js"></script>
+<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="../../../../../assets/dash_assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+<script src="../../../../../assets/dash_assets/demo/demo.js"></script>
+<script>
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
+    demo.initChartsPages();
+  });
+</script>

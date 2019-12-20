@@ -1,0 +1,137 @@
+<mat-drawer-container class="messages" autosize>
+  <div class="selected_details" *ngIf="userSelected">
+    <div class="selected_details_img">
+      <img [src]="selectedUserDetails.profilePic" [alt]="selectedUserDetails.name"
+           (error)="setDefaultPic()" (click)="openDialog($event)"></div>
+    <div class="selected_details_username">
+      <h4>{{selectedUserDetails.name}}</h4>
+    </div>
+    <div class="attachment-image">
+      <span class="ml-2 mr-2"><i class="fas fa-paperclip fa-lg"  (click)="sendFileInit()"></i></span>
+      <span class="ml-2 mr-2"><i class="fas fa-file fa-lg" (click)="drawer.toggle()"></i></span>
+    </div>
+  </div>
+
+  <div class="selected_details" *ngIf="!userSelected">
+    <div class="selected_details_img" (click)="toggleDrawer();drawer.toggle()">
+      <img src="https://cdn1.iconfinder.com/data/icons/mix-color-3/502/Untitled-8-512.png" (error)="setDefaultPic()" class="rounded-circle"
+           [alt]="selectedGroupDetails.name" width="40px" height="40px">
+    </div>
+    <div class="selected_details_username">
+      <h4 (click)="drawer.toggle()">{{selectedGroupDetails.name}}</h4>
+      <span *ngFor="let user of usersList.slice(0,3)">{{user.name.split(" ")[0]}},</span><span>...</span>
+    </div>
+    <div class="attachment-image">
+      <span class="ml-2 mr-2"><i class="fas fa-paperclip fa-lg" (click)="sendFileInit()"></i></span>
+      <span class="ml-2 mr-2"><i class="fas fa-file fa-lg" (click)="toggleDrawer2();drawer.toggle()"></i></span>
+    </div>
+  </div>
+  <div class="msg_history" #scrollBottom>
+    <input #input type="file" id="files" name="files" (change)="fileupload($event)" />
+    <div *ngFor="let message of messages"
+         [ngClass]="{'outgoing_msg': message.fromId == loggedInUser.userId , 'incoming_msg': (message.fromId != loggedInUser.userId && message.fromId != 0), 'notification': message.fromId == 0 && message.groupMessage}">
+      <div [ngClass]="{'sent_msg': message.fromId == loggedInUser.userId , 'received_msg' : (message.fromId != loggedInUser.userId && message.fromId != 0) ,'notification_msg': message.fromId == 0 && message.groupMessage}">
+        <div [class.d-none]="(!message.groupMessage || message.fromId === loggedInUser.userId) && message.fromId != 0" class="received_from" (click)="showMessages2(message.fromId)" >{{ getUser(message.fromId)}}</div>
+        <p>{{ message.content }}</p>
+        <span class="time_date" [class.d-none]="message.fromId === 0">{{message.dateTime}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="type_msg" [class.d-none]="!canSendMessage">
+    <div class="input_msg_write">
+      <input type="text" [placeholder]=placeholder name="content" [(ngModel)]="content"
+             class="form-control write_msg" id="content" autofocus required>
+      <button id="msg_send_btn" type="button" (click)="sendMessage()"><i class="fas fa-paper-plane"
+                                                                         aria-hidden="true"></i></button>
+    </div>
+  </div>
+  <mat-drawer #drawer class="example-sidenav" mode="side" opened="false" position="end" max-width>
+    <div class="selected_details_drawer">
+      <i class="fas fa-times" (click)="drawer.toggle()"></i>
+      <h4 *ngIf="!userSelected">Group Info</h4>
+      <h4 *ngIf="userSelected">User Details</h4>
+    </div>
+    <div *ngIf="!drawerToggle" style="margin-top: 70px">
+      <div class="group_info" style="margin-top: 30px;background-color: white">
+        <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" class="p-3">
+        <div class="groupDetails">
+          <div style="display: inline;vertical-align: middle">
+            <span style="font-size: 30px;float: left;display: block" *ngIf="!isEditMode">{{selectedGroupDetails.name}}</span>
+            <input type="text" [(ngModel)]="selectedGroupDetails.name" name="groupName" *ngIf="isEditMode" (keydown.enter)="isEditMode = false;editGroupInfo(selectedGroupDetails)" autofocus>
+            <span style="color: #1DC7EA;float: right;padding-right:25px;display: block;cursor: pointer" (click)="isEditMode = true">
+              <i class="fas fa-pencil-alt fa-lg"></i>
+            </span>
+          </div>
+          <div style="font-size: 15px;clear: both" class="createdAt">Created on {{selectedGroupDetails.createdAt.split(" ")[0]}} at {{selectedGroupDetails.createdAt.split(" ")[2]}}</div>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="groupDescription">
+        <div style="color: green;font-size: 15px">Description</div>
+
+        <span style="font-size: 20px;float: left;display: block" *ngIf="!isDesEditMode">{{selectedGroupDetails.description}}</span>
+        <input type="text" [(ngModel)]="selectedGroupDetails.description" name="groupDesc" *ngIf="isDesEditMode" (keydown.enter)="isDesEditMode = false;editGroupInfo(selectedGroupDetails)" autofocus>
+        <span style="color: #1DC7EA;float: right;padding-right:25px;display: block;cursor: pointer" (click)="isDesEditMode = true">
+              <i class="fas fa-pencil-alt fa-lg" style="padding-left: 10px"></i>
+        </span>
+      </div>
+      <mat-divider style="clear: both"></mat-divider>
+      <div class="pt-2 pb-2 invite_users" style="padding-left:30px;cursor: pointer;"   [class.d-none]="selectedGroupDetails.adminId !== loggedInUser.userId"  (click)="inviteUser()">
+        <i class="fas fa-user-plus fa-lg" style="padding-left: 10px"></i>
+        <span style="font-size: 20px;padding-left: 10px" id="invite_users_button">Invite users</span>
+      </div>
+      <div class="m-2" *ngIf="!userSelected" [class.d-none]="selectedGroupDetails.adminId === loggedInUser.userId || !canSendMessage">
+        <button (click)="exitGroup()" id="exit_group_button">Exit group</button>
+      </div>
+      <mat-divider></mat-divider>
+      <p id="number_of_participants" *ngIf="!userSelected">{{groupMembers.length}} participants</p>
+      <mat-divider></mat-divider>
+      <mat-list >
+        <mat-list-item *ngFor="let user of usersList,let i = index" (click)="showMessages(user)">
+          <div class="user_profile_img">
+            <img [src]="user.profilePic" (error)="setDefaultPic1(i)" class="rounded-circle"
+                 [alt]="user.name" width="40px" height="40px">
+          </div>
+          <div class="mat-list-text">
+            <h3 matLine> {{user.name}} </h3>
+            <p matLine>
+              <span> {{user.email}} </span>
+            </p>
+          </div>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div *ngIf="drawerToggle" style="margin-top: 70px">
+      <div class="stylish-input-group">
+        <input type="text"  placeholder="Search messages" [(ngModel)]="searchTerm">
+      </div>
+      <mat-tab-group>
+        <mat-tab label="Messages">
+          <mat-list>
+            <mat-list-item *ngFor="let message of searchMessages">
+              <div class="mat-list-text">
+<!--                <div ngxTextHighlight [content]="message.content"     searchTerm="zz" [caseSensitive]="false" matLine></div>-->
+                <span [innerHTML]="message.content | highlight: searchTerm1"></span>
+                <p matLine>
+                  <span>from {{getUser(message.fromId)}} </span>
+                </p>
+              </div>
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </mat-tab>
+        <mat-tab label="Files">
+          <mat-list>
+            <mat-list-item *ngFor="let file of files" (click)="downloadFileSystem(file)">
+              {{file.filename}}
+            </mat-list-item>
+          </mat-list>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </mat-drawer>
+</mat-drawer-container>
+
+
+

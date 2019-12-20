@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title"> Groups</h4>
+        </div>
+        <div class="card-header">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#createNewGroup">Create New Group</button>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                  Id
+                </th>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Delete
+                </th>
+                <th>
+                  Go
+                </th>
+              </thead>
+              <tbody *ngFor="let group of groups;index as i">
+                <tr>
+                  <td id="">
+                    {{group.id}}
+                  </td>
+                  <td>
+                    {{group.company.name}}
+                  </td>
+                  <td>
+                    {{group.company.catchPhrase}}
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" (click)="deleteGroup()"><i class="fas fa-trash-alt"></i></button>
+                  </td>
+                  <td>
+                    <button class="btn btn-primary" [routerLink]="['/chatWindow']">Go</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Departments</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                  Id
+                </th>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Delete
+                </th>
+                <th>
+                  Go
+                </th>
+              </thead>
+              <tbody *ngFor="let group of groups;index as i">
+                <tr>
+                  <td id="">
+                    {{group.id}}
+                  </td>
+                  <td>
+                    {{group.company.name}}
+                  </td>
+                  <td>
+                    {{group.company.catchPhrase}}
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" (click)="deleteGroup()"><i class="fas fa-trash-alt"></i></button>
+                  </td>
+                  <td>
+                    <button class="btn btn-primary" [routerLink]="['/chatWindow']">Go</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- create a new group from -->
+  <div class="modal fade" id="createNewGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 col-md-offset-4">
+              <form [formGroup]="createNewGroupForm" class="form-horizontal" role="form">
+                <div class="form-group">
+                  <input type="text" formControlName="groupName" class="form-control"
+                    placeholder="Enter GroupName">
+                </div>
+                <div class="form-group">
+                    <input type="text" formControlName="description" class="form-control"
+                      placeholder="Description">
+                  </div>
+                  <div class="form-group">
+                      <ng-multiselect-dropdown 
+                        [placeholder]="'select member'"
+                        [data]="dropdownList"
+                        [formControl]="members"
+                        [settings]="dropdownSettings"
+                        (onSelect)="onItemSelect($event)" 
+                        (onDeSelect)="onDeSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                        (onDeSelectAll)="onDeSelectAll($event)">
+                      </ng-multiselect-dropdown>
+                  </div>
+              </form>
+            </div><!-- /.col-lg-12 -->
+          </div><!-- /.row -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="onCreate()" data-dismiss="modal">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

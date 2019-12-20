@@ -1,0 +1,27 @@
+templates:
+- './my.tmpl'
+
+route:
+ group_by: [cluster]
+ receiver: alerts-test
+ routes:
+  - match:
+      severity: slack
+      receiver: alert
+
+receivers:
+- name: alerts-test
+  slack_configs:
+  - api_url: https://hooks.slack.com/services/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 ### Change it with your URL
+    send_resolved: true
+    channel: '#alert'
+    text: '{{ range .Alerts }}{{ .Annotations.description }}
+          {{ end }}'
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
+

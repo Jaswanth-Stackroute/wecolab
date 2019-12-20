@@ -1,0 +1,13 @@
+/* #createMeetingRoomBtn{
+    float:right;
+    display:block;
+    margin-right:0px;
+    clear:left;
+}; */
+
+#createMeetingRoomBtn{
+    position: fixed;
+    bottom: 0px;
+    right: 0px; 
+    z-index: 1;
+};

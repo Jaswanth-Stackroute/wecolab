@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>WeColab</title>
+
+    <!-- // bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script>
+        if (!location.hash.replace('#', '').length) {
+            var y = (Math.random() * 100).toString().replace('.', '');
+            location.href = location.href.split('#')[0] + '#' + y;
+            location.reload();
+        }
+        var val1 = location.href.split('#')[0];
+        var val3 = val1.split(':')[0];
+        var val4 = val1.split(':')[1];
+        var val2 = location.href.split('#')[1];
+    </script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="title" content="Video Conferencing" />
+    <meta name="description" content="Video Conferencing using WebRTC." />
+    <meta name="keywords" content="WebRTC, Video Conferencing, Demo, Example, Experiment" />
+
+    <link rel="stylesheet" href="./style1.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script>
+        document.createElement('article');
+    </script>
+
+    <!-- script used to stylize video element -->
+    <script src="https://www.webrtc-experiment.com/getMediaElement.min.js">
+    </script>
+    <script src="https://www.webrtc-experiment.com/socket.io.js">
+    </script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="https://www.webrtc-experiment.com/IceServersHandler.js"></script>
+    <script src="https://www.webrtc-experiment.com/CodecsHandler.js"></script>
+    <script src="https://www.webrtc-experiment.com/RTCPeerConnection-v1.5.js">
+    </script>
+    <script src="https://www.webrtc-experiment.com/video-conferencing/conference.js">
+    </script>
+
+</head>
+
+<body>
+
+    <div class="container-fluid h-100">
+        <div class="row justify-content-center h-100 ">
+            <div class="col-md-5 col-sm-12 col-lg-5 col-xl-5 text-center" id="yellow">
+                <!-- video conferencing -->
+                <br>
+                <header>
+                    <h1 style="color: black; padding-top: 1rem;">
+                        Video Chat with your team
+                    </h1>
+                </header>
+
+                <article style="width: 100%; padding: 0; margin: 0;">
+                    <!-- just copy this <section> and next script -->
+                    <section style="border-width: 0ch; width: 100%; padding: 0; margin: 0;">
+                        <section class="text-center">
+                            <br>
+
+                            <button id="setup-new-room" type="button" class="btn " style="color: whitesmoke;">Start
+                                Conference</button>
+
+                        </section>
+                        <!-- list of all available conferencing rooms -->
+                        <table style="width: 100%;" id="rooms-list"></table>
+                        <!-- local/remote videos container -->
+                        <div id="videos-container" style="padding: 0; margin: 0;">
+                        </div>
+                    </section>
+
+                    <script>
+                        var config = {
+                            openSocket: function(config) {
+                                var SIGNALING_SERVER = 'https://socketio-over-nodejs2.herokuapp.com:443/';
+
+                                config.channel = config.channel || location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
+                                var sender = Math.round(Math.random() * 999999999) + 999999999;
+
+                                io.connect(SIGNALING_SERVER).emit('new-channel', {
+                                    channel: config.channel,
+                                    sender: sender
+                                });
+
+                                var socket = io.connect(SIGNALING_SERVER + config.channel);
+                                socket.channel = config.channel;
+                                socket.on('connect', function() {
+                                    if (config.callback) config.callback(socket);
+                                });
+
+                                socket.send = function(message) {
+                                    socket.emit('message', {
+                                        sender: sender,
+                                        data: message
+                                    });
+                                };
+
+                                socket.on('message', config.onmessage);
+                            },
+                            // for remote  stream  started
+                            onRemoteStream: function(media) {
+                                var mediaElement = getMediaElement(media.video, {
+                                    width: (videosContainer.clientWidth / 2) - 50,
+                                    buttons: ['mute-audio', 'mute-video', 'full-screen', 'volume-slider']
+                                });
+                                mediaElement.id = media.stream.streamid;
+                                videosContainer.appendChild(mediaElement);
+                            },
+                            // for remote stream ended
+                            onRemoteStreamEnded: function(stream, video) {
+                                if (video.parentNode && video.parentNode.parentNode && video.parentNode.parentNode.parentNode) {
+                                    video.parentNode.parentNode.parentNode.removeChild(video.parentNode.parentNode);
+                                }
+                            },
+
+                            // when you find a room
+                            onRoomFound: function(room) {
+                                var alreadyExist = document.querySelector('button[data-broadcaster="' + room.broadcaster + '"]');
+                                if (alreadyExist) return;
+                                document.getElementById('setup-new-room').style.display = "none";
+                                if (typeof roomsList === 'undefined') roomsList = document.body;
+
+                                var tr = document.createElement('tr');
+                                tr.innerHTML = '<td><strong> meeting is going on, kindly join</strong></td>' +
+                                    '<td><button class="join btn" type="button" style="color:white">Join</button></td>';
+                                roomsList.appendChild(tr);
+
+                                var joinRoomButton = tr.querySelector('.join');
+                                joinRoomButton.setAttribute('data-broadcaster', room.broadcaster);
+                                joinRoomButton.setAttribute('data-roomToken', room.roomToken);
+                                joinRoomButton.onclick = function() {
+                                    this.disabled = true;
+                                    tr.innerHTML = "<td><i><b>Successfully joined, please wait for others ;)<b><i></td>";
+
+                                    var broadcaster = this.getAttribute('data-broadcaster');
+                                    var roomToken = this.getAttribute('data-roomToken');
+                                    captureUserMedia(function() {
+                                        conferenceUI.joinRoom({
+                                            roomToken: roomToken,
+                                            joinUser: broadcaster
+                                        });
+                                    }, function() {
+                                        joinRoomButton.disabled = false;
+                                    });
+                                };
+                            },
+                            onRoomClosed: function(room) {
+                                var joinButton = document.querySelector('button[data-roomToken="' + room.roomToken + '"]');
+                                if (joinButton) {
+                                    joinButton.parentNode.parentNode.parentNode.parentNode.removeChild(joinButton.parentNode.parentNode.parentNode);
+                                }
+                            },
+                            onReady: function() {
+                                //console.log('now you can open or join rooms');
+                            }
+                        };
+                        // on clicking new start conference 
+                        function setupNewRoomButtonClickHandler() {
+                            btnSetupNewRoom.disabled = true;
+                            document.getElementById('setup-new-room').disabled = true;
+                            captureUserMedia(function() {
+                                conferenceUI.createRoom({
+                                    roomName: "meeting-room" //(document.getElementById('conference-name') || { }).value || 'Anonymous'
+                                });
+                            }, function() {
+                                btnSetupNewRoom.disabled = document.getElementById('conference-name').disabled = false;
+                            });
+                        }
+                        // capture userMedia
+                        function captureUserMedia(callback, failure_callback) {
+                            var video = document.createElement('video');
+                            video.muted = true;
+                            video.volume = 0;
+
+                            try {
+                                video.setAttributeNode(document.createAttribute('autoplay'));
+                                video.setAttributeNode(document.createAttribute('playsinline'));
+                                video.setAttributeNode(document.createAttribute('controls'));
+                            } catch (e) {
+                                video.setAttribute('autoplay', true);
+                                video.setAttribute('playsinline', true);
+                                video.setAttribute('controls', true);
+                            }
+                            getUserMedia({
+                                video: video,
+                                onsuccess: function(stream) {
+                                    config.attachStream = stream;
+
+                                    var mediaElement = getMediaElement(video, {
+                                        width: (videosContainer.clientWidth / 2) - 50,
+                                        buttons: ['mute-audio', 'mute-video', 'full-screen', 'volume-slider']
+                                    });
+                                    mediaElement.toggle('mute-audio');
+                                    videosContainer.appendChild(mediaElement);
+                                    callback && callback();
+                                },
+                                onerror: function() {
+                                    alert('unable to get access to your webcam');
+                                    callback && callback();
+                                }
+                            });
+                        }
+
+                        var conferenceUI = conference(config);
+                        /* UI specific */
+                        var videosContainer = document.getElementById('videos-container') || document.body;
+                        var btnSetupNewRoom = document.getElementById('setup-new-room');
+                        var roomsList = document.getElementById('rooms-list');
+
+                        if (btnSetupNewRoom) btnSetupNewRoom.onclick = setupNewRoomButtonClickHandler;
+                        (function() {
+                            var uniqueToken = document.getElementById('unique-token');
+                            if (uniqueToken)
+                                if (location.hash.length > 2) {
+                                    var x = location.href;
+                                    uniqueToken.parentNode.parentNode.parentNode.innerHTML = '<h2 style="text-align:center;display: block;"><a href="' + x + '" target="_blank">Right click to copy & share this private link</a></h2>';
+                                } else uniqueToken.innerHTML = uniqueToken.parentNode.parentNode.href = '#' + (Math.random() * new Date().getTime()).toString(36).toUpperCase().replace(/\./g, '-');
+                        })();
+
+                        function scaleVideos() {
+                            var videos = document.querySelectorAll('video'),
+                                length = videos.length,
+                                video;
+                            var minus = 130;
+                            var windowHeight = 700;
+                            var windowWidth = 1000;
+                            var windowAspectRatio = windowWidth / windowHeight;
+                            var videoAspectRatio = 4 / 3;
+                            var blockAspectRatio;
+                            var tempVideoWidth = 0;
+                            var maxVideoWidth = 0;
+
+                            for (var i = length; i > 0; i--) {
+                                blockAspectRatio = i * videoAspectRatio / Math.ceil(length / i);
+                                if (blockAspectRatio <= windowAspectRatio) {
+                                    tempVideoWidth = videoAspectRatio * windowHeight / Math.ceil(length / i);
+                                } else {
+                                    tempVideoWidth = windowWidth / i;
+                                }
+                                if (tempVideoWidth > maxVideoWidth)
+                                    maxVideoWidth = tempVideoWidth;
+                            }
+                            for (var i = 0; i < length; i++) {
+                                video = videos[i];
+                                if (video)
+                                    video.width = maxVideoWidth - minus;
+                            }
+                        }
+                        window.onresize = scaleVideos;
+                    </script>
+
+                </article>
+            </div>
+            <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 text-center nopadding embed-responsive embed-responsive-16by9" id="black">
+                <!-- screen sharing -->
+                <iframe class="embed-responsive-item " frameborder="0" src="" id="screen-sharing-window" allowfullscreen></iframe> heyreyyeyy
+                <script>
+                    val1 = "https://wecolab.stackroute.io:8702#";
+                    document.getElementById("screen-sharing-window").src = val1 + val2;
+                </script>
+                    <a class="bottom-right" href="http://wecolab.stackroute.io" style="color: yellow; padding-right: 1.2rem; text-decoration: none;">
+                        <h2 style="color: rgb(211, 185, 132); font-family: 'Helvetica Neue', sans-serif;">WeColab</h2>
+                    </a>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

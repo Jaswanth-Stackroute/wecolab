@@ -1,0 +1,450 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+
+<!-- Navigation -->
+<div class="bg-img">
+    <nav class="navbar navbar-expand-lg navbar-dark" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger btn" style="color: #ffff00;" href="#masthead"><img
+                    src="../../../../../assets//images/wecolab.png" width="60px" height="60px">eColab</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
+                        <a class="nav-link js-scroll-trigger btn" (click)="companyRegistration()">Register</a>
+                    </li>
+                    <li *ngIf="!isUserLoggedIn" class="nav-item" data-toggle="collapse"
+                        data-target=".navbar-collapse.show">
+                        <a class="nav-link js-scroll-trigger btn btn-outline-primary" (click)="employeeLogin()">Sign
+                            in</a>
+                    </li>
+                    <li class="nav-item dropdown" *ngIf="isUserLoggedIn">
+                        <a class="nav-link dropdown-toggle btn" id="dropdown04" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">{{Name}}
+                            <div class="dropdown-menu" aria-labelledby="dropdown04">
+                                <div *ngIf='role'>
+                                    <a *ngIf='role=="WECOLAB"' class="dropdown-item"
+                                        [routerLink]="['/wecolab']">profile</a>
+                                    <a *ngIf='role=="USER"' class="dropdown-item"
+                                        [routerLink]="['/emp-main/profile']">profile</a>
+                                    <a *ngIf='role=="OWNER"' class="dropdown-item"
+                                        [routerLink]="['/company/company']">profile</a>
+                                </div>
+                                <a class="dropdown-item" (click)="logOut()">Sign out</a>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead" id="masthead">
+
+        <div class="container">
+
+            <div class="intro-text">
+
+
+                <div class="hero-text">
+                    <h1 style="font-size:45px">Collaborate At Your Fingertips</h1>
+                    <div class="intro-lead-in">
+                        <h3>Your teammates are just a click away. Work where you are. Talk. Chat. Collaborate.
+                        </h3>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </header>
+
+</div>
+<!-- Services -->
+<!-- <section class="page-section" id="services">
+  <div class="container">
+  </div>
+</section> -->
+
+<!-- About -->
+<section class="page-section" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase"> All-in-One Platform</h2>
+                <h3 class="section-subheading text-muted">WeColab combines a multitude of essential collaboration tools
+                    in a single interconnected platform.</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="../../../../../assets/img/about/1.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+
+                                <h4 class="subheading">Chat</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted">Use Chat to communicate effectively across teams. New members
+                                    added to a chat group can see its message history, providing greater context to help
+                                    them catch up and discover what they need to know.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="../../../../../assets/img/about/2.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+
+                                <h4 class="subheading">Conference Room</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted">Meetings don't have to be restricted to physical meeting rooms!
+                                    Make a virtual meeting room, With this easy-to-use feature, you can connect with
+                                    colleagues on your computer or mobile device anytime, anywhere.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="../../../../../assets/img/about/3.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>Share Files</h4>
+                                <h4 class="subheading"></h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted">Want to have something from your colleagues, don't worry! we got
+                                    you. Use this feature to share files across groups or individually. Fun sharing!</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="../../../../../assets/img/about/4.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4></h4>
+                                <h4 class="subheading">Presentation Room</h4>
+                            </div>
+                            <div class="timeline-body">
+                                <p class="text-muted">Come on in the Presentation Room and allows the recipient to not
+                                    only view the material on the shared device, but also watch as the user interacts
+                                    with it in real-time, navigating the interface and making changes</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <a (click)="companyRegistration()">
+                            <div class="timeline-image btn">
+                                <h4>Be A Part
+                                    <br>Of Our
+                                    <br>Story!</h4>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team -->
+<section class="bg-light page-section" id="team">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
+                <h3 class="section-subheading text-muted">Happy to connect!</h3>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-3">
+
+                <div class="our-team">
+                    <div class="pic">
+                        <img class="mx-auto rounded-circle" src="../../../../../assets/images/praveen.jpeg" alt="">
+                        <ul class="list-inline social-buttons social">
+                            <li class="list-inline-item">
+                                <a href="https://twitter.com/praveeniiest123">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/praveenawasthi01091">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://www.linkedin.com/in/praveenawasthi01091/">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4>Praveen Awasthi</h4>
+                    <p class="text-muted">Developer</p>
+
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="our-team">
+                    <div class="pic">
+                        <img class="mx-auto rounded-circle" src="../../../../../assets/images/ayush_lohani.jpeg" alt="">
+                        <ul class="list-inline social-buttons social">
+                            <li class="list-inline-item">
+                                <a href="https://twitter.com/_lohani_">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/lohani2280">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://www.linkedin.com/in/ayush-lohani/  ">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4>Ayush Lohani</h4>
+                    <p class="text-muted">Developer</p>
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="our-team">
+                    <div class="pic">
+                        <img class="mx-auto rounded-circle" src="../../../../../assets/images/arpit.jpg" alt="">
+                        <ul class="list-inline social-buttons social">
+                            <li class="list-inline-item">
+                                <a href="https://twitter.com/Arpit_gautam177">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/Aptayu">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://www.linkedin.com/in/arpit-gautam-900903162/">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4>Arpit Gautam</h4>
+                    <p class="text-muted">Developer</p>
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="our-team">
+                    <div class="pic">
+                        <img class="mx-auto rounded-circle" src="../../../../../assets/images/srikant.jpg" alt="">
+                        <ul class="list-inline social-buttons social">
+                            <li class="list-inline-item">
+                                <a href="https://github.com/srikanth9">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/srikanth97">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://www.linkedin.com/in/srikanth-nandikonda-835083ba">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4>Srikanth Nandikonda</h4>
+                    <p class="text-muted">Developer</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-3">
+
+                <div class="our-team">
+                    <div class="pic">
+                        <img class="mx-auto rounded-circle" src="../../../../../assets/images/neha.jpeg" alt="">
+                        <ul class="list-inline social-buttons social">
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/nehasongira">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                    
+                                <a href="https://www.linkedin.com/in/neha-songira-595b02140/">
+                                <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4>Neha Songira</h4>
+                    <p class="text-muted">Developer</p>
+
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="our-team">
+                    <div class="pic">
+                        <img class="mx-auto rounded-circle" src="../../../../../assets/images/varun.jpeg" alt="">
+                        <ul class="list-inline social-buttons social">
+                            <li class="list-inline-item">
+                                <a href="https://github.com/Varun-VT">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/Varun-VT">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://in.linkedin.com/in/varun-tripathi">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4>Varun Tripathi</h4>
+                    <p class="text-muted">Developer</p>
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="our-team">
+                    <div class="pic">
+                        <img class="mx-auto rounded-circle" src="../../../../../assets/images/raman.jpeg" alt="">
+                        <ul class="list-inline social-buttons social">
+                            <li class="list-inline-item">
+                                <a href="https://github.com/Raman27d">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/Raman27d">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/Raman27d">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4>Raman Dhingra</h4>
+                    <p class="text-muted">Developer</p>
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="our-team">
+                    <div class="pic">
+                        <img class="mx-auto rounded-circle" src="../../../../../assets/images/dileep.JPG" alt="">
+                        <ul class="list-inline social-buttons social">
+                            <li class="list-inline-item">
+                                <a href="https://twitter.com/dileepmaurya3">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/dileepkm6">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://www.linkedin.com/in/dileep-maurya-724ba4118/">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4>Dileep Maurya</h4>
+                    <p class="text-muted">Developer</p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <p class="large text-muted"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row align-items-center"> 
+            <div class="col-md-4">
+                <span class="copyright">Copyright &copy; WeColab 2019</span>
+            </div>
+            <div class="col-md-4">
+                <ul class="list-inline social-buttons">
+                    <li class="list-inline-item">
+                        <a href="https://twitter.com/praveeniiest123">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item ">
+                        <a href="https://github.com/praveenawasthi01091">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="https://www.linkedin.com/in/praveenawasthi01091/">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul class="list-inline quicklinks">
+                    <li class="list-inline-item">
+                        <a class="item" [routerLink]="['/Terms&Conditions']" target="_blank">Terms of Use & Privacy
+                            Policy</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="item" [routerLink]="['/contact']">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

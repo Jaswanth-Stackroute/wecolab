@@ -1,0 +1,26 @@
+<div class="container-dialog">
+  <div class="dialog-header">
+    <i class="fas fa-arrow-left" (click)="onNoClick()"></i>
+    <h1 mat-dialog-title>Add users</h1>
+  </div>
+
+  <div class="type_msg">
+    <div class="input_msg_write">
+      <input type="text" placeholder="search contacts" name="content"
+             class="form-control write_msg" id="content" [(ngModel)]="searchTerm">
+    </div>
+  </div>
+
+  <div mat-dialog-content style="overflow-y: scroll">
+    <mat-selection-list #users>
+      <mat-list-option checkboxPosition="before" class="mat-primary" *ngFor="let user of dummyUsersList" [value]="user">
+        {{user.name}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+
+  <div mat-dialog-actions id="end">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="inviteUser(users.selectedOptions.selected)" cdkFocusInitial>Add</button>
+  </div>
+</div>

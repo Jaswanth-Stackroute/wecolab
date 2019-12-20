@@ -1,0 +1,33 @@
+<div id="charts">
+  <div> 
+  <canvas id="lineChart"></canvas>
+  </div>
+  <div> 
+  <!-- <canvas id="line1Chart"></canvas> -->
+  </div>
+</div>
+<h3>WeColab Verified Registered companies</h3>
+<div class="container">
+  <button (click)="exportAsXLSX()" class="btn btn-info mb-4 mt-2">Download Excel</button>
+  <div class="table-responsive {-sm}">
+  <table class="table table-striped table-bordered table-hover">
+    <tr>
+      <th>Id</th>
+      <th>Company</th>
+      <th>Email</th>
+      <th>Joining Month</th>
+      <th>Members</th>
+    </tr>
+    <tbody *ngFor="let user of ownerData">
+      <tr *ngIf="user.enabled">
+        <td>{{user.company.companyId}}</td>
+        <td>{{user.company.companyName}}</td>
+        <td>{{user.emailId}}</td>
+        <td>{{user.company.registeredOn | date:'MMM yy'}}</td>
+        <td>{{myhash.get(user.company.companyId)}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div><br>
+</div>
+

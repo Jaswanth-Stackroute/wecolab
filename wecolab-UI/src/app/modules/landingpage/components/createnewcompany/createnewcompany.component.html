@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<div class="signup-form">
+  <button id="x" (click)="closeModel()">X</button>
+  <form [formGroup]="companyForm" (ngSubmit)="onRegister()">
+    <!-- <div class="row" *ngIf="successMsg">
+      <div class="col-xs-12">
+        <p class="alert alert-success">
+           <strong>{{message}}</strong> Please verify your email to sign in!. 
+      
+        </p>
+      </div>
+    </div>
+    <div class="row" *ngIf="errorMsg">
+      <div class="col-xs-12">
+        <p class="alert alert-danger">
+          {{message}}
+        </p>
+      </div>
+    </div> -->
+
+    <h3>Register A Company</h3>
+    <div class="form-group">
+      <input type="text" formControlName="companyId" class="form-control" placeholder="Company Registration Number">
+      <div id="error" *ngIf="companyId.invalid && (companyId.dirty || companyId.touched)">
+        <small *ngIf="companyId.errors['required']">companyId required</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" formControlName="companyName" class="form-control" name="companyName"
+        placeholder="Company Name">
+      <div id="error" *ngIf="companyName.invalid && (companyName.dirty || companyName.touched)">
+        <small *ngIf="companyName.errors['required']">companyName required</small>
+        <small></small>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="email" formControlName="emailId" class="form-control" name="emailId" placeholder="Email">
+      <div id="error" *ngIf="emailId.invalid && (emailId.dirty || emailId.touched)">
+        <small *ngIf="emailId.errors['required']">emailId required</small>
+        <small *ngIf="emailId.errors['pattern']">invalid emailId</small>
+        <!-- <small *ngIf="emailId.errors['emailValidator']">emailId already exist</small> -->
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-6">
+          <input type="text" formControlName="firstName" name="firstName" class="form-control" placeholder="FirstName">
+          <div id="error" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+            <small *ngIf="firstName.errors['required']">firstName required</small>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input type="text" formControlName="lastName" name="lastName" class="form-control" placeholder="LastName">
+          <div id="error" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+            <small *ngIf="lastName.errors['required']">lastName required</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="tel" formControlName="phone" name="phone" class="form-control" placeholder="Phone number">
+      <div id="error" *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+        <small *ngIf="phone.errors['required']">phone number required</small>
+        <small *ngIf="phone.errors['pattern']">invalid phone number</small>
+        <small></small>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="password" formControlName="password" class="form-control" placeholder="Password">
+      <div id="error" *ngIf="password.invalid && (password.dirty || password.touched)">
+        <small *ngIf="password.errors['required']">password required</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="password" formControlName="confirmPassword" class="form-control" name="confirmPassword"
+        placeholder="Confirm Password" passwordValidator="password">
+      <div id="error" *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)">
+        <small *ngIf="confirmPassword.errors['required']">confirmPassword required</small>
+        <small *ngIf="confirmPassword.errors['passwordValidator'] && confirmPassword.dirty">passwords didn't match,try
+          again</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="checkbox-inline">
+        <input type="checkbox" name="termAndCondition" formControlName="termAndCondition"> I accept the <a
+          [routerLink]="['/Terms&Conditions']" target="_blank">Terms of Use & Privacy Policy</a>
+      </label>
+    </div>
+    <div class="form-group">
+      <button type="submit" id="submitButton" [disabled]="!companyForm.valid"
+        class="btn btn-success btn-lg btn-block">Register
+        Now</button>
+    </div>
+  </form>
+
+</div>

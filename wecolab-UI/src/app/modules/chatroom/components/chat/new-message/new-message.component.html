@@ -1,0 +1,24 @@
+<div class="animated-content inbox_chat">
+  <div class="chat_list" *ngFor="let user of userList;let i = index" (click)="showMessages(user)">
+    <div class="chat_people">
+      <div class="chat_img">
+        <img [src]="user.profilePic" (error)="setDefaultPic(user,i)" class="rounded-circle"
+             [alt]="user.name" width="40px" height="40px">
+      </div>
+      <div class="chat_ib">
+        <h5>{{user.name}}</h5>
+      </div>
+    </div>
+  </div>
+  <div class="chat_list" *ngFor="let group of groupList" (click)="sendGroupMessage(group)">
+    <div class="chat_people">
+      <div class="chat_img">
+        <img src="https://cdn1.iconfinder.com/data/icons/mix-color-3/502/Untitled-8-512.png" alt="sunil">
+      </div>
+      <div class="chat_ib">
+          <h5>{{group.name}}</h5>
+      </div>
+    </div>
+  </div>
+</div>
+

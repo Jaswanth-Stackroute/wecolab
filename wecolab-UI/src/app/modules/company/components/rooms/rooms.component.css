@@ -1,0 +1,12 @@
+#createMeetingRoomBtn{
+    position: fixed;
+    bottom: 0px;
+    right: 0px; 
+    z-index: 1;
+};
+
+.participateIcon{
+    position: fixed;
+    top: 0px;
+    right: 0px; 
+}

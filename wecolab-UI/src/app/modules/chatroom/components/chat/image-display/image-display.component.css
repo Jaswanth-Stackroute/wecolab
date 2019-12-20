@@ -1,0 +1,19 @@
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+  padding: 0px;
+}
+
+.container img{
+  background-color: #578EFC;
+}
+
+/* Bottom left text */
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+  font-size: 20px;
+  font-weight: bold;
+}

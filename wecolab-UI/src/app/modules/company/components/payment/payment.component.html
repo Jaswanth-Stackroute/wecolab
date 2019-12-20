@@ -1,0 +1,157 @@
+<div  class="pricing" id="pricing" *ngIf="pricing">
+ 
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/pricing/">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+            .bd-placeholder-img {
+              font-size: 1.125rem;
+              text-anchor: middle;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+            }
+      
+            @media (min-width: 768px) {
+              .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+              }
+            }
+          </style>
+          
+          <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Pricing</h1>
+            <p class="lead"></p>
+          </div>
+          
+          <div class="container">
+            <div class="card-deck mb-3 text-center">
+              <div class="card mb-6 shadow-sm">
+                <div class="card-header">
+                  <h4 class="my-0 font-weight-normal">Free</h4>
+                </div>
+                <div class="card-body">
+                  <h1 class="card-title pricing-card-title">₹0 <small class="text-muted">/ mo</small></h1>
+                  <ul class="list-unstyled mt-3 mb-4">
+                    <li>Upto 10 participants allowed</li>
+                    <li>Share screen</li>
+                    <li>Video Conferencing</li>
+                    <li>Unlimited number & length of meetings</li>
+                    <li>No time limits</li>
+                    <li>Unlimited toll & internet calls including international conference lines</li>
+
+                  </ul>
+                  <button type="button" class="btn btn-lg btn-block btn-outline-primary">You are enjoying this!</button>
+                </div>
+              </div>
+              
+              <div class="card mb-6 shadow-sm">
+                <div class="card-header">
+                  <h4 class="my-0 font-weight-normal">Enterprise</h4>
+                </div>
+                <div class="card-body">
+                  <h1 class="card-title pricing-card-title">₹15000 <small class="text-muted">/ mo</small></h1>
+                  <ul class="list-unstyled mt-3 mb-4">
+                    <li>50 participants allowed</li>
+                    <li>Phone and email support</li>
+                    <li>Scheduling</li>
+                    <li>Toll-free numbers</li>
+                    <li>Help center access</li>
+                  </ul>
+                  <button type="button" class="btn btn-lg btn-block btn-primary" (click)="doPayment(15000)" [(ngModel)]="amountEntered">PayNow</button>
+                </div>
+              </div>
+            </div>
+    
+    </div>
+    </div>
+
+  <div class="container" id="haspaid" *ngIf="haspaid">
+    <p>You seem to have already paid for our service</p>
+    <p>{{daysfrompayment}} days of enjoying our service. Hope you are liking it!</p>
+  </div>
+    
+    <div class="container" id="payment" *ngIf="payment">
+      <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4" id="payment-border">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title">
+                          Payment Details
+                      </h3>
+                      <div class="checkbox pull-right">
+                          <!-- <label>
+                              <input type="checkbox" />
+                              Remember
+                          </label> -->
+                      </div>
+                  </div><br>
+                  <div class="panel-body">
+                      <form role="form">
+                          <div class="form-group">
+                              <label for="cardNumber">
+                                  CARD NUMBER</label>
+                              <div class="input-group">
+                                  <input #number type="text" class="form-control" id="cardNumber"
+                                      placeholder="Valid Card Number" required autofocus maxlength="16"/>
+                                  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-7">
+                                  <div class="form-group">
+                                      <label for="expityMonth">
+                                          EXPIRY DATE</label>
+                                      <div class="col-lg-6 pl-ziro">
+                                          <input #exp_month type="text" class="form-control" id="expityMonth"
+                                              placeholder="MM" required maxlength="2"/>
+                                      </div>
+                                      <div class="col-lg-6 pl-ziro">
+                                          <input #exp_year type="text" class="form-control" id="expityYear"
+                                              placeholder="YY" required maxlength="2"/></div>
+                                  </div>
+                              </div>
+                              <div class="col-md-5 pull-right">
+                                  <div class="form-group">
+                                      <label for="cvCode">
+                                          CV CODE</label>
+                                      <input #cvc type="password" class="form-control" id="cvCode" placeholder="CV"
+                                          required />
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+    
+              <br />
+              <!-- <a class="btn btn-success btn-lg btn-block">Amount :{{amount}}</a> -->
+              <div class="alert alert-primary" role="alert">
+                  <!-- <input type="text" class="form-control" id="amounttopay" placeholder="Rs" -->
+                  <!-- required [(ngModel)]="amountEntered" name="amountEntered"/> -->
+                  <p>Amount:  ₹<i class="fa fa-inr" aria-hidden="true"></i> {{amountEntered}}</p>
+              </div>
+              <br>
+              <a class="btn btn-secondary btn-lg btn-block" role="button"
+                  (click)="addCard(number.value,exp_month.value,exp_year.value,cvc.value)">Pay</a>
+          </div>
+          <div class="col-md-4">
+              <p></p>
+          </div>
+      </div>
+    </div>
+    <div class="container" id="payment-success" *ngIf="paymentSuccess">
+      <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+              <div class="alert alert-dark" role="alert">
+                  <h1>Payment Successfull for {{amountEntered}}!</h1>
+              </div>
+              <a class="btn btn-secondary btn-lg btn-block" [href]="receipt_url" target="_blank">Click Here for Receipt</a>
+          </div>
+          <div class="col-md-2"></div>
+      </div>
+    
+    </div>
+    

@@ -1,0 +1,76 @@
+<img class="spinner" *ngIf="loading" src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />
+
+<div class="container-fluid p-0" *ngIf="!loading">
+  <div class="messaging">
+    <div class="inbox_msg">
+      <div class="inbox_people">
+        <div class="fixed-header">
+          <div class="user_profile">
+            <div *ngIf='loggedInUser.role=="USER"' class="user_profile_img">
+              <img [src]="loggedInUser1.profilePic" (error)="setDefaultPic()" class="rounded-circle"
+                [routerLink]="['/emp-main/profile']" [alt]="loggedInUser.firstName" width="40px" height="40px">
+            </div>
+            <div *ngIf='loggedInUser.role=="OWNER"' class="user_profile_img">
+              <img [src]="loggedInUser.profilePic" (error)="setDefaultPic()" class="rounded-circle"
+                [routerLink]="['/company/administration']" [alt]="loggedInUser.firstName" width="40px" height="40px">
+            </div>
+            <div class="user_name">
+              <h4>{{loggedInUser.firstName}}</h4>
+            </div>
+            <div class="direct_message_icon">
+              <a (click)="showMessages(userData)" class="menutoggle" style="margin-right:5px"><i
+                  class="fas fa-bell fa-lg"></i><span class="badge badge-warning"
+                  id="lblCartCount">{{invitations.length}}</span></a>
+              <a (click)="toggleComponentBack()" [class.d-none]="!directMessage"><i
+                  class="fas fa-window-close fa-lg"></i></a>
+              <a (click)="toggleComponents()" [class.d-none]="directMessage"><i
+                  class="fas fa-comment-alt fa-lg"></i></a>
+              <span mat-button [matMenuTriggerFor]="appMenu" style="cursor: pointer">&#8942;</span>
+              <mat-menu #appMenu="matMenu" yPosition="below" xPosition="before">
+                <ng-template matMenuContent>
+                  <button mat-menu-item (click)="openDialog($event)">New Group</button>
+                  <button mat-menu-item [routerLink]="['/emp-main/profile']">Profile</button>
+                  <button mat-menu-item (click)="toggleComponents()">Start new chat</button>
+                  <button mat-menu-item [class.d-none]="permission" (click)="enableNotification()">Enable
+                    Notifications</button>
+                  <button mat-menu-item (click)="logOut()">Log out {{loggedInUser.firstName}}</button>
+                </ng-template>
+              </mat-menu>
+            </div>
+          </div>
+
+          <div class="search-bar">
+            <div class="stylish-input-group">
+              <input type="text" placeholder="Search" [(ngModel)]="searchTerm">
+              <span class="input-group-addon"><button type="button"> <i class="fa fa-search" aria-hidden="true"></i>
+                </button></span>
+            </div>
+          </div>
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <button class="nav-buttons" [ngClass]="{ 'active':activeTab ==='all'}"
+                (click)="allRecentMessages()">All</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-buttons" [ngClass]="{ 'active':activeTab==='users'}"
+                (click)="filterUsers()">users</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-buttons" [ngClass]="{ 'active':activeTab==='groups'}"
+                (click)="filterGroups()">Groups</button>
+            </li>
+            <li class="nav-item" [class.d-none]="!(loggedInUser.role == 'OWNER' && directMessage)">
+              <button class="nav-buttons" [ngClass]="{ 'active':activeTab ==='OWNER'}"
+                (click)="teamGroups()">Team</button>
+            </li>
+          </ul>
+        </div>
+        <div id="listComponent" #listComponent>
+          <app-recent-messages></app-recent-messages>
+        </div>
+      </div>
+      <h4>{{selectedUser}}</h4>
+      <div #messageComponent></div>
+    </div>
+  </div>
+</div>

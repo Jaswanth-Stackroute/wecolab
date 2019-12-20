@@ -1,0 +1,41 @@
+img{ max-width:100%;}
+
+.container-dialog{
+  padding: 0px;
+  overflow: hidden;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.dialog-header{
+  background: green;
+  text-align: left;
+}
+
+.dialog-header i{
+  padding:10px;
+  cursor: pointer;
+}
+
+.mat-dialog-title{
+  display: inline-block;
+  color: white;
+  font-size: 20px;
+  margin-top: 23px;
+}
+
+#end{
+  margin-top: auto;
+  justify-content: flex-end;
+  padding-right: 30px;
+  margin-bottom: 10px;
+}
+
+div.mat-list-text {
+  flex-direction: row !important;
+}
+
+.mat-dialog-content{
+  padding: 30px;
+}

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#ffffff">
+
+<head>
+    <title>WeColab</title>
+    <script>
+        if (!location.hash.replace('#', '').length) {
+            location.href = location.href.split('#')[0] + '#' + (Math.random() * 100).toString().replace('.', '');
+            location.reload();
+        }
+    </script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="author" type="text/html" href="https://plus.google.com/+MuazKhan">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script>
+        document.createElement('article');
+    </script>
+
+    <link rel="stylesheet" href="./style.css">
+    <!-- scripts used for screen-sharing -->
+    <script src="https://www.webrtc-experiment.com/socket.io.js">
+    </script>
+    <script src="https://www.webrtc-experiment.com/DetectRTC.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="https://www.webrtc-experiment.com/CodecsHandler.js"></script>
+    <script src="https://www.webrtc-experiment.com/BandwidthHandler.js"></script>
+    <script src="https://www.webrtc-experiment.com/IceServersHandler.js"></script>
+    <script src="https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing/conference.js">
+    </script>
+</head>
+
+<body style="color: whitesmoke; background-color: rgb(46, 28, 28);">
+    <div class="myclass " style="color: whitesmoke; background-color: rgb(46, 28, 28); padding: 0; margin: 0; text-align: center;">
+
+        <header style=" text-align: center;">
+            <br>
+            <h1 style="color: whitesmoke; padding-top: 1rem;" id="top-heading">
+                Share your screen with multiple people
+            </h1>
+        </header>
+
+
+        <section id="logs-message" class="experiment" style="display: none;text-align: center;font-size: 1.5em;line-height: 2;color: red;">WebRTC getDisplayMedia API.
+        </section>
+        <br>
+
+        <!-- just copy this <section> and next script -->
+        <section class="experiment " style="padding: 0; margin: 0;">
+
+            <section class="hide-after-join" style="text-align: center;">
+                <input type="text" id="room-name" placeholder="Enter " style="width: 80%; text-align: center; display: none;">
+                <button id="share-screen" type="button" class="btn" style="color: whitesmoke;">Share Your
+                    Screen</button>
+            </section>
+
+            <!-- local/remote videos container -->
+            <div id="videos-container" class="h-100" style="padding: 0; margin: 0;"></div>
+
+            <section id="unique-token" style="display: none; text-align: center; padding: 0; margin: 0;"></section>
+        </section>
+
+        <script>
+            var config = {
+                // via: https://github.com/muaz-khan/WebRTC-Experiment/tree/master/socketio-over-nodejs
+                openSocket: function(config) {
+                    var SIGNALING_SERVER = 'https://socketio-over-nodejs2.herokuapp.com:443/';
+
+                    config.channel = config.channel || location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
+                    var sender = Math.round(Math.random() * 999999999) + 999999999;
+
+                    io.connect(SIGNALING_SERVER).emit('new-channel', {
+                        channel: config.channel,
+                        sender: sender
+                    });
+
+                    var socket = io.connect(SIGNALING_SERVER + config.channel);
+                    socket.channel = config.channel;
+                    socket.on('connect', function() {
+                        if (config.callback) config.callback(socket);
+                    });
+
+                    socket.send = function(message) {
+                        socket.emit('message', {
+                            sender: sender,
+                            data: message
+                        });
+                    };
+
+                    socket.on('message', config.onmessage);
+                },
+                onRemoteStream: function(media) {
+                    if (isbroadcaster) return;
+
+                    var video = media.video;
+                    videosContainer.insertBefore(video, videosContainer.firstChild);
+
+
+
+                    document.querySelector('.hide-after-join').style.display = 'none';
+                    document.getElementById("top-heading").innerHTML = "You are getting screen!";
+                },
+                onRoomFound: function(room) {
+                    if (isbroadcaster) return;
+
+                    conferenceUI.joinRoom({
+                        roomToken: room.roomToken,
+                        joinUser: room.broadcaster
+                    });
+
+                    document.querySelector('.hide-after-join').innerHTML = '<img src="https://www.webrtc-experiment.com/images/key-press.gif" style="margint-top:10px; width:50%;" />';
+                },
+                onNewParticipant: function(numberOfParticipants) {
+                    var text = numberOfParticipants + ' users are viewing your screen!';
+
+                    if (numberOfParticipants <= 0) {
+                        text = 'No one is viewing your screen YET.';
+                    } else if (numberOfParticipants == 1) {
+                        text = 'Only one user is viewing your screen!';
+                    }
+
+                    document.title = text;
+                    showErrorMessage(document.title, 'green');
+                },
+                oniceconnectionstatechange: function(state) {
+                    var text = '';
+
+                    if (state == 'closed' || state == 'disconnected') {
+                        text = 'One of the participants just left.';
+                        document.title = text;
+                        showErrorMessage(document.title);
+                    }
+
+                    if (state == 'failed') {
+                        text = 'Failed to bypass Firewall rules. It seems that target user did not receive your screen. Please ask him reload the page and try again.';
+                        document.title = text;
+                        showErrorMessage(document.title);
+                    }
+
+                    if (state == 'connected' || state == 'completed') {
+                        text = '';
+                        document.title = text;
+                        showErrorMessage(document.title, 'green');
+                    }
+
+                    if (state == 'new' || state == 'checking') {
+                        text = 'Someone is trying to join you.';
+                        document.title = text;
+                        showErrorMessage(document.title, 'green');
+                    }
+                }
+            };
+
+            function showErrorMessage(error, color) {
+                var errorMessage = document.querySelector('#logs-message');
+                errorMessage.style.color = color || 'red';
+                errorMessage.innerHTML = error;
+                errorMessage.style.display = 'none';
+            }
+
+            function getDisplayMediaError(error) {
+                if (location.protocol === 'http:') {
+                    showErrorMessage('Please test this WebRTC experiment on HTTPS.');
+                } else {
+                    showErrorMessage(error.toString());
+                }
+            }
+
+            function captureUserMedia(callback, failure_callback) {
+                var video = document.createElement('video');
+                video.muted = true;
+                video.volume = 0;
+                try {
+                    video.setAttributeNode(document.createAttribute('autoplay'));
+                    video.setAttributeNode(document.createAttribute('playsinline'));
+                    video.setAttributeNode(document.createAttribute('controls'));
+                } catch (e) {
+                    video.setAttribute('autoplay', true);
+                    video.setAttribute('playsinline', true);
+                    video.setAttribute('controls', true);
+                }
+
+                if (navigator.getDisplayMedia || navigator.mediaDevices.getDisplayMedia) {
+                    function onGettingSteam(stream) {
+                        video.srcObject = stream;
+                        videosContainer.insertBefore(video, videosContainer.firstChild);
+
+                        addStreamStopListener(stream, function() {
+                            location.reload();
+                        });
+
+                        config.attachStream = stream;
+                        callback && callback();
+                        // rotateVideo(video);
+
+                        addStreamStopListener(stream, function() {
+                            location.reload();
+                        });
+
+                        showPrivateLink();
+
+                        document.querySelector('.hide-after-join').style.display = 'none';
+                    }
+
+                    if (navigator.mediaDevices.getDisplayMedia) {
+                        navigator.mediaDevices.getDisplayMedia({
+                            video: true,
+                            audio: true
+                        }).then(stream => {
+                            onGettingSteam(stream);
+                        }, getDisplayMediaError).catch(getDisplayMediaError);
+                    } else if (navigator.getDisplayMedia) {
+                        navigator.getDisplayMedia({
+                            video: true,
+                            audio: true
+                        }).then(stream => {
+                            onGettingSteam(stream);
+                        }, getDisplayMediaError).catch(getDisplayMediaError);
+                    }
+                } else {
+                    if (DetectRTC.browser.name === 'Chrome') {
+                        if (DetectRTC.browser.version == 71) {
+                            showErrorMessage('Please enable "Experimental WebPlatform" flag via chrome://flags.');
+                        } else if (DetectRTC.browser.version < 71) {
+                            showErrorMessage('Please upgrade your Chrome browser.');
+                        } else {
+                            showErrorMessage('Please make sure that you are not using Chrome on iOS.');
+                        }
+                    }
+
+                    if (DetectRTC.browser.name === 'Firefox') {
+                        showErrorMessage('Please upgrade your Firefox browser.');
+                    }
+
+                    if (DetectRTC.browser.name === 'Edge') {
+                        showErrorMessage('Please upgrade your Edge browser.');
+                    }
+
+                    if (DetectRTC.browser.name === 'Safari') {
+                        showErrorMessage('Safari does NOT supports getDisplayMedia API yet.');
+                    }
+                }
+            }
+
+            /* on page load: get public rooms */
+            var conferenceUI = conference(config);
+
+            /* UI specific */
+            var videosContainer = document.getElementById("videos-container") || document.body;
+
+            document.getElementById('share-screen').onclick = function() {
+                var roomName = document.getElementById('room-name') || {};
+                roomName.disabled = true;
+                captureUserMedia(function() {
+                    conferenceUI.createRoom({
+                        roomName: (roomName.value || 'Anonymous') + ' shared his screen with you'
+                    });
+                });
+                this.disabled = true;
+                // document.getElementById('share-screen').innerHTML="you are getting screen from presenter!"
+            };
+
+            function rotateVideo(video) {
+                video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(0deg)';
+                setTimeout(function() {
+                    video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(0deg)';
+                }, 10);
+            }
+
+            function showPrivateLink() {
+                var uniqueToken = document.getElementById('unique-token');
+                uniqueToken.innerHTML = '<a href="' + location.href + '" target="_blank">Copy & Share This Private Room Link</a>';
+                uniqueToken.style.display = 'none   ';
+            }
+        </script>
+    </div>
+
+</body>
+
+</html>

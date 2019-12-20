@@ -1,0 +1,89 @@
+.selected_details{
+  padding: 17px 30px 0px;
+  overflow: hidden;
+  border-bottom:1px solid #c4c4c4;
+  background-color: #ededed;
+}
+
+img{ max-width:100%;}
+.messages {
+  margin-top: -10px;
+  float: left;
+  width: 70%;
+}
+
+.selected_details_img  {
+  float: left;
+  width: 5%;
+  cursor: pointer;
+}
+
+.selected_details_username{
+  padding-left: 20px;
+  height: 56px;
+  float: left;
+  font-family: 'Montserrat', sans-serif;
+}
+.msg_history {
+  height: 90vh;
+  padding: 0px 30px;
+  overflow-y: auto;
+  background-image: url("../../../Shared/criss-cross.png");
+}
+
+
+.received_msg {
+  display: inline-block;
+  vertical-align: top;
+  min-width: 30%;
+  max-width: 55%;
+  margin: 10px;
+  padding: 5px;
+  background: white;
+}
+
+
+.received_from{
+  color: orange;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.notification_content{
+  padding: 10px;
+}
+
+.nav-buttons{
+  background-color: white; /* Green */
+  color: black;
+  padding: 2px 20px 2px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 5px;
+  cursor: pointer;
+  border-radius: 12px;
+  border-color: #c4c4c4;
+}
+
+.nav-buttons:hover{
+  background-color: blue;
+  color: white;
+}
+
+.nav-buttons2:hover{
+  background-color: red;
+  color: white;
+}
+
+
+.time_date {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+  margin: 0 0;
+  float: right;
+}
+
+

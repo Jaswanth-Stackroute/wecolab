@@ -1,0 +1,7 @@
+<h4>Send File <i class="fas fa-times close-file" (click)="onNoClick()" ></i></h4>
+<div class="send-file-container">
+  <p class="file-ext">{{data.fileExt.split('/')[1]}}</p>
+  <p class="file-name">{{data.fileName}}</p>
+</div>
+
+<button class="send-file-button" [mat-dialog-close]="data.fileName">Send</button>

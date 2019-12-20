@@ -1,0 +1,181 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    command: mongod --port 9001
+    network_mode: host
+    ports:
+      - 9001:9001
+    expose:
+      - 9001
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-container
+    network_mode: host
+    ports:
+      - 3306
+    expose:
+      - 9002
+    restart: always
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: Root@123
+      entrypoint:
+        sh -c "
+        echo 'CREATE DATABASE IF NOT EXISTS confRoomDb; CREATE DATABASE IF NOT EXISTS presentationDb;CREATE DATABASE IF NOT EXISTS userDataBase;CREATE DATABASE IF NOT EXISTS firstdatabase;' > /docker-entrypoint-initdb.d/init.sql;
+        /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        "
+    volumes:
+      - /db-data:/var/lib/mysql
+  config-service:
+    image: config-image
+    restart: always
+    build:
+      config-service/
+    ports:
+      - 8888:8888
+    expose:
+      - 8888
+    container_name: config-container
+  eureka-service:
+    image: eureka-image
+    restart: always
+    build:
+      eureka-service/
+    container_name:
+      eureka-container
+    network_mode: host
+    depends_on:
+      - config-service
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+  api-gateway-service:
+    image: zuul-image
+    restart: always
+    build:
+      api-gateway-service/
+    ports:
+      - 8081:8081
+    network_mode: host
+    container_name:
+      zuul-container
+    depends_on:
+      - eureka-service
+      - mysql
+  angular-application:
+    image: angular-image
+    restart: always
+    build:
+      wecolab-UI/
+    container_name:
+      angular-container
+    ports:
+      - "4200:4200"
+  chat-service:
+    image: chat-service-image
+    restart: always
+    build:
+      chat-service/
+    ports:
+      - 8086:8086
+    expose:
+      - 8086
+    network_mode: host
+    depends_on:
+      - mongo
+      - eureka-service
+
+  payment-backend-service:
+    image: payment-service-image
+    build:
+      payment-service/
+    restart: always
+    network_mode: host
+    container_name: payment
+    depends_on:
+      - mysql
+      - eureka-service
+    ports:
+      - 8200:8200
+    expose:
+      - 8200
+  
+  notification:
+    image: notification
+    restart: always
+    network_mode: host
+    build:
+      notification/
+    ports:
+      - 8090:8090
+    expose:
+      - 8090
+    container_name: notification
+
+  meeting-room-service-boot:
+    image: roomcreation
+    build: room-creation-service/
+    restart: always
+    network_mode: host
+    container_name: meeting-room-creation
+    depends_on:
+      - mysql
+      - eureka-service
+    ports:
+      - 8085
+    expose:
+      - 8085
+
+  presentation-room-service-boot:
+    image: presentation-room-creation
+    build: presentation-room-service/
+    restart: always
+    network_mode: host
+    container_name: screen-room-creation
+    depends_on:
+      - mysql
+      - eureka-service
+    ports:
+      - 8087
+    expose:
+      - 8087
+ #Nginx Service1
+  videoserver:
+    image: nginx-video:latest
+    build: video-conferencing-service
+    container_name: video-nginx
+    restart: unless-stopped
+    ports:
+      - "8502:443"
+    networks:
+      - app-network
+
+ #Nginx Service2
+  screenserver1:
+    image: nginx-presentation:latest
+    build: presentation-room-service-frontend
+    container_name: presentation-nginx
+    restart: unless-stopped
+    ports:
+      - "8602:443"
+    networks:
+      - app-network
+ #Nginx Service3
+  screenserver:
+    image: nginx-screen:latest
+    build: screen-sharing-service
+    container_name: screen-nginx2
+    restart: unless-stopped
+    ports:
+      - "8702:443"
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

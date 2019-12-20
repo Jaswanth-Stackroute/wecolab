@@ -1,0 +1,17 @@
+<div class="inbox_chat">
+  <div class="chat_list animated-content"
+       *ngFor="let user of recentUsers;let i = index"
+       (click)="showMessages(user,$event)"
+       [ngClass]="{'active' : user.id === userSelected}">
+    <div class="chat_people">
+      <div class="chat_img">
+        <img [src]="user.profilePic" (error)="setDefaultPic(user,i)" class="rounded-circle"
+                                 [alt]="user.name" width="40px" height="40px">
+      </div>
+      <div class="chat_ib">
+        <h5>{{user.name}}<span class="chat_date">{{user.lastMessage}}</span></h5>
+        <p>{{user.message}}</p>
+      </div>
+    </div>
+  </div>
+</div>

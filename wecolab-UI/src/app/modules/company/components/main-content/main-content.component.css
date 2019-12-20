@@ -1,0 +1,18 @@
+@media (max-width: 990px) {
+    #sidebarr {
+        margin-left: -250px;
+        transform: rotateY(90deg);
+    }
+    #sidebarr.active {
+        margin-left: 0;
+        transform: none;
+    }
+}
+#navigation
+{
+    background-color: white;
+    color: black;
+}
+img {
+    border-radius: 50%;
+  }

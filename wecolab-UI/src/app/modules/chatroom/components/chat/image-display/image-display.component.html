@@ -1,0 +1,9 @@
+<div class="container">
+  <img [src]="data.user.profilePic" width="320px" height="270px" (error)="setDefaultPic()">
+  <div class="bottom-left">{{data.user.name}}</div>
+</div>
+
+<div class="user_details" style="padding: 20px">
+  <p>Email : <span>{{data.user.email}}</span></p>
+  <p>Phone : <span>{{data.user.phone}}</span></p>
+</div>

@@ -1,0 +1,32 @@
+<div class="container-dialog">
+  <div class="dialog-header">
+    <i class="fas fa-arrow-left" (click)="onNoClick()"></i>
+    <h1 mat-dialog-title>Create group</h1>
+  </div>
+  <div mat-dialog-content class="mat-dialog-content">
+    <p>
+      <mat-form-field appearance="legacy" style="width: 400px">
+        <mat-label>Enter group name</mat-label>
+        <input matInput placeholder="group name" [(ngModel)]="groupName" id="groupName" required>
+        <mat-hint>group1</mat-hint>
+      </mat-form-field>
+    </p>
+    <p style="width: 100%">
+      <mat-form-field appearance="legacy" style="width: 400px">
+        <mat-label>Enter group description</mat-label>
+        <input matInput placeholder="description" [(ngModel)]="groupDescription" id="groupDescription" required>
+        <mat-hint>created for project discussion</mat-hint>
+      </mat-form-field>
+    </p>
+
+    <mat-selection-list #users style="overflow-y: scroll">
+      <mat-list-option checkboxPosition="before" class="mat-primary" *ngFor="let user of usersList" [value]="user">
+        {{user.name}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+  <div mat-dialog-actions id="end">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="createGroup(users.selectedOptions.selected)">Create</button>
+  </div>
+</div>

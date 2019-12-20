@@ -1,0 +1,45 @@
+global:
+  scrape_interval: 5s
+  external_labels:
+    monitor: 'devopsage-monitor'
+
+rule_files:
+  - 'alert.rules'
+
+scrape_configs:
+  - job_name: 'eureka-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8080']
+  - job_name: 'meeting-room-service-boot'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8085']
+  - job_name: 'chat-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8086']
+  - job_name: 'presentation-room-service-boot'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8087']
+  - job_name: 'payment-backend-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8200']
+  - job_name: 'config-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8888']
+  - job_name: 'notification-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8090']
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets:
+      - "localhost:9093"
+

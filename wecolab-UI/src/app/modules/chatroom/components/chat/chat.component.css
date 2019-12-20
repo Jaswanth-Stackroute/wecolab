@@ -1,0 +1,180 @@
+img{ max-width:100%;}
+
+.spinner {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.animated-content{
+  animation: snackbarIn 1s;
+}
+
+@keyframes snackbarIn {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform:translateX(0px);
+    opacity: 1;
+  }
+}
+
+
+.fixed-header{
+  overflow:hidden;
+  border-bottom:1px solid #c4c4c4;
+  background-color: #ededed;
+}
+.user_profile{
+  padding: 20px 10px ;
+}
+
+.user_profile_img {
+  float: left;
+  width: 11%;
+  padding-bottom: 10px;
+}
+
+.user_name {float: left; width:40%;}
+
+.user_name h4 {
+  color: #05728f;
+  font-size: 21px;
+  margin: auto;
+  padding-left: 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+
+.direct_message_icon{
+  float: right;
+}
+
+.direct_message_icon span{
+  padding-left: 20px;
+}
+.search-bar {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  background-color: #F8F8F8;
+}
+
+.search-bar input{
+  border : 1px solid #cdcdcd;
+  border-width:0 0 1px 0;
+  width:100%;
+  margin-top: 5px;
+  background:white;
+  border-radius: 20px;
+}
+.search-bar input:focus {
+  border-radius: 20px;
+}
+.search-bar .input-group-addon button {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  padding: 0;
+  color: #707070;
+  font-size: 18px;
+}
+.search-bar .input-group-addon { margin: 0 0 0 -27px;}
+
+.nav-tabs .nav-item{
+  margin: 0px 5px;
+}
+
+.nav-buttons{
+  margin: 30px;
+  background-color: white; /* Green */
+  border: none;
+  color: black;
+  padding: 2px 20px 2px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.nav-buttons.active{
+  background-color: blue;
+  color: white;
+}
+
+.direct-messages{
+  padding: 5px 30px;
+  text-align: left;
+}
+
+
+.inbox_people {
+  background: white none repeat scroll 0 0;
+  float: left;
+  overflow: hidden;
+  width: 30%;
+  border-right:1px solid #c4c4c4;
+  height: 100vh;
+}
+.inbox_msg {
+  border: 1px solid #c4c4c4;
+  clear: both;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.inbox_chat { height: 100vh; overflow-y: scroll;}
+
+.active_chat{ background:#ebebeb;}
+
+/*.menutoggle {*/
+/*  position: relative;*/
+/*  float: left;*/
+/*  width: 50px;*/
+/*  height: 52px;*/
+/*  font-size: 22px;*/
+/*  cursor: pointer;*/
+/*  color: #1d2939;*/
+/*  border-right: 1px solid #eee;*/
+/*  border-left: 1px solid #eee;*/
+/*  -moz-transition: all 0.2s ease-out 0s;*/
+/*  -webkit-transition: all 0.2s ease-out 0s;*/
+/*  transition: all 0.2s ease-out 0s;*/
+/*}*/
+
+/*.badge {*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  right: 0;*/
+/*  display:inline-block;*/
+/*  padding:3px 4px;*/
+/*  font-size:12px;*/
+/*  color:#fff;*/
+/*  text-align:center;*/
+/*  background-color:#777;*/
+/*  border-radius:10px; */
+/*}*/
+
+#lblCartCount {
+  font-size: 12px;
+  background: #ff0000;
+  color: #fff;
+  padding: 0 5px;
+  vertical-align: top;
+  margin-left: -10px;
+}
+.badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
